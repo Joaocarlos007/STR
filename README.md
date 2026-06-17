@@ -8,7 +8,7 @@
 | --------------------------  | --------- |
 | João Carlos Willy Ziebell   | 23207404  |
 | Giancarlo Baldo Cavanus     | 23101636  |
-| Gabriel de Medeiros Bettini |  946872   |
+| Gabriel de Medeiros Bettini |   946872   |
 
 ---
 
