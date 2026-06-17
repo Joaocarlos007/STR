@@ -46,9 +46,7 @@ Core/
 │   ├── main.cpp
 │   ├── miros.cpp
 │   └── ...
-│
-Startup/
-Drivers/
+├── Startup/
 ```
 
 ## Organização dos Arquivos
