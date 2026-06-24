@@ -27,7 +27,8 @@ rtos::OSThread blinky1;
 void main_blinky1() {
     while (1) {
     	conta0++;
-    	rtos::OS_delay(rtos::TICKS_PER_SEC * 3U / 4U);
+    	rtos::OS_yield();
+    	//rtos::OS_delay(rtos::TICKS_PER_SEC * 3U / 4U);
     }
 }
 
@@ -36,7 +37,8 @@ rtos::OSThread blinky2;
 void main_blinky2() {
     while (1) {
     	conta1++;
-    	rtos::OS_delay(rtos::TICKS_PER_SEC / 3U);
+    	rtos::OS_yield();
+    	//rtos::OS_delay(rtos::TICKS_PER_SEC / 3U);
     }
 }
 
@@ -45,7 +47,8 @@ rtos::OSThread blinky3;
 void main_blinky3() {
     while (1) {
     	conta2++;
-    	rtos::OS_delay(rtos::TICKS_PER_SEC * 3U / 5U);
+    	rtos::OS_yield();
+    	//rtos::OS_delay(rtos::TICKS_PER_SEC * 3U / 5U);
     }
 }
 
