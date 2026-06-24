@@ -120,6 +120,57 @@ void OS_delay(uint32_t ticks) {
     __asm volatile ("cpsie i");
  }
 
+/* ---------- Fase 1 yield() e semáfaros ---------- */
+
+void OS_yield(void) {
+	__asm volatile ("cpsid i");
+	OS_sched();
+	__asm volatile ("cpsie i");
+}
+
+void OS_Semaphore_init(OS_Semaphore *sem, uint32_t initCount) {
+    sem->count = initCount;
+    sem->waitSet = 0U;
+}
+
+void OS_semWait(OS_Semaphore *sem) {
+	__asm volatile ("cpsid i");
+
+    // não chamar a partir da idleThread
+    Q_REQUIRE(OS_curr != OS_thread[0]);
+
+    if (sem->count > 0U) {
+        // count != 0: consome e segue executando
+        --sem->count;
+    } else {
+        // count = 0: move a tarefa atual do READY para o WAIT do semáforo
+        uint32_t const bit = (1U << (OS_curr->id - 1U));
+        OS_readySet  &= ~bit;
+        sem->waitSet |= bit;
+        OS_sched();   // despacha outra tarefa pronta imediatamente
+    }
+
+    __asm volatile ("cpsie i");
+}
+
+void OS_semSignal(OS_Semaphore *sem) {
+	__asm volatile ("cpsid i");
+
+    if (sem->waitSet != 0U) {
+        // há tarefa(s) bloqueada(s): desbloqueia a de menor índice
+        uint32_t bit = sem->waitSet & (sem->waitSet - 1U); // limpa o bit mais baixo
+        uint32_t woken = sem->waitSet & ~bit;              // isola o bit mais baixo
+        sem->waitSet = bit;
+        OS_readySet |= woken;
+        OS_sched();   // pode haver troca imediata de contexto
+    } else {
+        // ninguém esperando: apenas devolve o crédito
+        ++sem->count;
+    }
+
+    __asm volatile ("cpsie i");
+}
+
 void OSThread_start(
     OSThread *me,
     OSThreadHandler threadHandler,
@@ -167,6 +218,7 @@ void OSThread_start(
 
     /* register the thread with the OS */
     OS_thread[OS_threadNum] = me;
+    me->id = OS_threadNum;  // guarda o próprio índice no TCB
     /* make the thread ready to run */
     if (OS_threadNum > 0U) {
         OS_readySet |= (1U << (OS_threadNum - 1U));
