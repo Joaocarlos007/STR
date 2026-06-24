@@ -8,8 +8,6 @@
 #ifndef INC_MIROS_H_
 #define INC_MIROS_H_
 
-#include <cstdint>  // tipos de inteiros com tamanhos de bits exatos
-
 namespace rtos {
 /* Thread Control Block (TCB) */
 typedef struct {
