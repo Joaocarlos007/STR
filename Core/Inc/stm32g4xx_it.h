@@ -21,9 +21,9 @@
 #ifndef __STM32G4xx_IT_H
 #define __STM32G4xx_IT_H
 
-//#ifdef __cplusplus
-// extern "C" {
-//#endif
+#ifdef __cplusplus
+extern "C" {void PendSV_Handler(void);}
+#endif
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
