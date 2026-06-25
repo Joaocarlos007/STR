@@ -10,18 +10,20 @@
 
 namespace rtos {
 /* Thread Control Block (TCB) */
-typedef struct {
+class OSThread {
+public:
     void *sp; /* stack pointer */
     uint32_t timeout; /* timeout delay down-counter */
     uint8_t id;  // guardar o índice da tarefa
     /* ... other attributes associated with a thread */
-} OSThread;
+};
 
-/* Semáforo de contagem, sem busy-waiting */
-typedef struct{
+/* Semáforo de contagem */
+class OS_Semaphore {
+public:
 	uint32_t count;   // contador
 	uint32_t waitSet; // bitmask das tarefas bloqueadas nesse semáforo
-} OS_Semaphore;
+};
 
 const uint16_t TICKS_PER_SEC = 100U;
 
