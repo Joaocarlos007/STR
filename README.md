@@ -373,32 +373,18 @@ Com o firmware da Fase 4, o padrão esperado no trace é fundamentalmente difere
 
 ---
 
-## Estrutura de Arquivos
+## 9. Uso de Ferramentas de IA no Desenvolvimento
 
-```
-str-miros-stm32/
-├── Core/
-│   ├── Inc/
-│   │   ├── miros.h          # API do RTOS: OSThread, OS_Semaphore, OSPeriodicTask
-│   │   ├── trace.h          # API de trace: TraceEvent, trace_record()
-│   │   └── ...
-│   └── Src/
-│       ├── miros.cpp        # Implementação do kernel (Fases 1, 2, 4)
-│       ├── main.cpp         # Aplicação (Fase ativa)
-│       ├── stm32g4xx_it.cpp # Handlers de interrupção + instrumentação de trace
-│       └── ...
-├── plot_rtos.py             # Visualizador de trace (Python + matplotlib)
-├── meu_trace.bin            # Dump do buffer de trace (gerado em debug)
-└── README.md                # Este documento
-```
+- **Fase 1:** correção do código de OS_semWait/OS_semSignal e depuração da lógica de bitmask (waitSet, OS_readySet).
+- **Fase 2:** geração do script plot_rtos.py e definição da estrutura TraceEvent.
+- **Fase 3:** identificação da ordem correta dos semáforos para evitar deadlock e correção do código do produtor/consumidor.
+- **Fase 4:** geração da estrutura OSPeriodicTask, código de OS_tick() e verificação do teste de escalonabilidade de Liu & Layland.
+- **README:** auxílio na elaboração do documento.
 
 ---
 
-## Dependências e Build
+## Dependências 
 
-- **IDE:** STM32CubeIDE 1.18+
-- **Toolchain:** GNU ARM Embedded (arm-none-eabi-g++ com suporte a C++20)
-- **HAL:** STM32CubeG4 (usado apenas para clock e inicialização de periféricos)
 - **Visualizador:** Python 3.x com `matplotlib` e `struct` (stdlib)
 
 ```bash
